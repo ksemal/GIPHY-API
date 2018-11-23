@@ -22,6 +22,7 @@ var arr;
 var limit;
 var clickedButton;
 var gifSet = $("<div>").addClass("card-columns col-md-12");
+var responseMovies;
 
 $(".row")
   .last()
@@ -41,7 +42,7 @@ function renderButtons() {
 renderButtons();
 
 $(".container").on("click", ".gifButton", displayGifs);
-
+$(".container").on("click", "img", displayAnim);
 function displayGifs() {
   gifSet.empty();
   if (clickedButton !== $(this).data("name")) {
@@ -57,19 +58,27 @@ function displayGifs() {
     "&api_key=dc6zaTOxFJmzC&limit=" +
     limit;
 
+  var queryURLMovies =
+    "https://www.omdbapi.com/?s=" + clickedButton + "&apikey=trilogy";
+
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    saveImgAttr(response);
+    $.ajax({
+      url: queryURLMovies,
+      method: "GET"
+    }).then(function(responseMovies) {
+      saveImgAttr(response, responseMovies);
+    });
     console.log(response);
-    $(".container").on("click", "img", displayAnim);
+    console.log(responseMovies);
   });
 }
 
-function saveImgAttr(response) {
+function saveImgAttr(response, responseMovies) {
   arr = response.data;
-
+  arrMovie = responseMovies;
   for (var i = 0; i < arr.length; i++) {
     var card = $(".hidden").html();
     card = $(card);
@@ -83,6 +92,12 @@ function saveImgAttr(response) {
     card.find("#title").append(arr[i].title);
     card.find("#rating").append(arr[i].rating);
     card.find("#tags").append(arr[i].slug);
+
+    card
+      .find(".card-link")
+      .attr("href", "https://www.imdb.com/title/" + arrMovie.Search[i].imdbID)
+      .append(arrMovie.Search[i].Title);
+
     gifSet.append(card);
   }
   $(".hidden").remove();
