@@ -20,15 +20,40 @@
 
   <body>
     <div class="container">
-      <h1>GIF SETS</h1>
-      <div id="buttons-view"></div>
-      <form id="newSet">
-        <label for="button-name">Add new button</label>
-        <input type="text" id="button-name" /><br />
-        <input id="add-button" type="submit" value="Add custom button" />
-      </form>
+      <div class="row header">
+        <div class="col-md-9"><h1>Moody GIFS</h1></div>
+        <div class="col-md-3">
+          <label>Add New Button:</label>
+          <form class="">
+            <input class="" type="text" id="button-name" />
+            <input id="add-button" type="submit" value="+" class="" />
+          </form>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row"><div id="buttons-view" class="col-md-12"></div></div>
+          <div class="row"><div class="col-md-12"></div></div>
+        </div>
+        <div id="favorite" class="col-md-4"><h2>&#9829 my favorite :</h2></div>
+      </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script type="text/javascript" src="assets/js/javascript.js"></script>
     </div>
   </body>
+  <div class="hidden">
+    <div class="card">
+      <img id="oneGif" class="card-img-top" src="" alt="Card image cap" />
+      <ul class="list-group list-group-flush">
+        <li id="title" class="list-group-item"><b>Title: </b></li>
+        <li id="rating" class="list-group-item"><b>Rating: </b></li>
+        <li id="tags" class="list-group-item"><b>Tags & Id: </b></li>
+      </ul>
+      <div class="card-body">
+        <a href="#" class="card-link">movie</a>
+        <a href="#" class="card-link">movie2</a>
+        <a href="#" class="card-link">movie3</a>
+      </div>
+    </div>
+  </div>
 </html>
