@@ -19,7 +19,9 @@ var topics = [
   "Weird"
 ];
 var arr;
+var arrMovie;
 var limit;
+var page;
 var clickedButton;
 var gifSet = $("<div>").addClass("card-columns col-md-12");
 var responseMovies;
@@ -70,15 +72,17 @@ function displayGifs() {
       method: "GET"
     }).then(function(responseMovies) {
       saveImgAttr(response, responseMovies);
+      console.log(response);
+      console.log(responseMovies);
     });
-    console.log(response);
-    console.log(responseMovies);
   });
 }
 
 function saveImgAttr(response, responseMovies) {
   arr = response.data;
-  arrMovie = responseMovies;
+  console.log(response);
+  console.log(responseMovies.Response);
+
   for (var i = 0; i < arr.length; i++) {
     var card = $(".hidden").html();
     card = $(card);
@@ -92,15 +96,23 @@ function saveImgAttr(response, responseMovies) {
     card.find("#title").append(arr[i].title);
     card.find("#rating").append(arr[i].rating);
     card.find("#tags").append(arr[i].slug);
+    card.find("#download").attr("href", arr[i].images.fixed_width_still.url);
 
-    card
-      .find(".card-link")
-      .attr("href", "https://www.imdb.com/title/" + arrMovie.Search[i].imdbID)
-      .append(arrMovie.Search[i].Title);
+    if ((i < 10) & (responseMovies.Response !== "False")) {
+      arrMovie = responseMovies.Search;
+      card
+        .find(".card-link")
+        .attr("href", "https://www.imdb.com/title/" + arrMovie[i].imdbID)
+        .append(arrMovie[i].Title);
+    }
 
     gifSet.append(card);
   }
-  $(".hidden").remove();
+}
+$(document).on("click", "#addToFav", addToFavorite);
+function addToFavorite() {
+  $("#favorite").append($(this).closest(".card"));
+  $(this).unbind(addToFavorite);
 }
 
 function displayAnim() {
