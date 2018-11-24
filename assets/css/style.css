@@ -32,8 +32,8 @@
 }
 
 button:hover {
-  background-color: rgba(240, 248, 255, 0.801);
-  color: #293f50;
+  background-color: #88646c;
+  color: wheat;
 }
 #buttons-view {
   text-align: center;
@@ -65,10 +65,27 @@ h2 {
   border-bottom: 1px solid #293f504b;
   font-size: 25px;
 }
+h5 {
+  color: gray;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 11px;
+}
 #favorite {
+  margin-top: 15px;
   max-height: 600px;
   overflow: scroll;
 }
 .hidden {
   display: none;
+}
+
+@media screen and (max-width: 640px) {
+  .card-columns {
+    column-count: 1;
+  }
+
+  h2 {
+    border-top: 1px solid #293f504b;
+    padding-top: 10px;
+  }
 }

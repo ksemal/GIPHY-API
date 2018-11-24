@@ -18,10 +18,10 @@ var topics = [
   "Stressed",
   "Weird"
 ];
+var movieCollection = [];
 var arr;
-var arrMovie;
 var limit;
-var page;
+var page = 1;
 var clickedButton;
 var gifSet = $("<div>").addClass("card-columns col-md-12");
 var responseMovies;
@@ -61,7 +61,11 @@ function displayGifs() {
     limit;
 
   var queryURLMovies =
-    "https://www.omdbapi.com/?s=" + clickedButton + "&apikey=trilogy";
+    "https://www.omdbapi.com/?s=" +
+    clickedButton +
+    "&page=" +
+    page +
+    "&apikey=trilogy";
 
   $.ajax({
     url: queryURL,
@@ -71,18 +75,25 @@ function displayGifs() {
       url: queryURLMovies,
       method: "GET"
     }).then(function(responseMovies) {
-      saveImgAttr(response, responseMovies);
-      console.log(response);
       console.log(responseMovies);
+
+      if (responseMovies.Response === "True") {
+        for (var i = 0; i < responseMovies.Search.length; i++) {
+          movieCollection.push(responseMovies.Search[i]);
+        }
+        page++;
+      }
+      saveImgAttr(response, movieCollection);
+      console.log(page);
+      console.log(movieCollection);
     });
   });
 }
 
-function saveImgAttr(response, responseMovies) {
+function saveImgAttr(response, movieCollection) {
   arr = response.data;
   console.log(response);
-  console.log(responseMovies.Response);
-
+  console.log(movieCollection);
   for (var i = 0; i < arr.length; i++) {
     var card = $(".hidden").html();
     card = $(card);
@@ -97,22 +108,30 @@ function saveImgAttr(response, responseMovies) {
     card.find("#rating").append(arr[i].rating);
     card.find("#tags").append(arr[i].slug);
     card.find("#download").attr("href", arr[i].images.fixed_width_still.url);
-
-    if ((i < 10) & (responseMovies.Response !== "False")) {
-      arrMovie = responseMovies.Search;
+    if (i < movieCollection.length) {
       card
         .find(".card-link")
-        .attr("href", "https://www.imdb.com/title/" + arrMovie[i].imdbID)
-        .append(arrMovie[i].Title);
+        .attr("href", "https://www.imdb.com/title/" + movieCollection[i].imdbID)
+        .append(movieCollection[i].Title);
     }
 
     gifSet.append(card);
   }
 }
 $(document).on("click", "#addToFav", addToFavorite);
+
 function addToFavorite() {
   $("#favorite").append($(this).closest(".card"));
-  $(this).unbind(addToFavorite);
+  $(this)
+    .attr({ id: "remove", title: "remove" })
+    .text("X");
+}
+$(document).on("click", "#remove", remove);
+
+function remove() {
+  $(this)
+    .closest(".card")
+    .remove();
 }
 
 function displayAnim() {
