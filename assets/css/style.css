@@ -50,7 +50,7 @@ button:hover {
   width: 18rem;
   color: black;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 img:hover {
   opacity: 0.5;

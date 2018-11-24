@@ -25,11 +25,9 @@ var page = 1;
 var clickedButton;
 var gifSet = $("<div>").addClass("card-columns col-md-12");
 var responseMovies;
-
-$(".row")
-  .last()
-  .prepend(gifSet);
-
+var storageSet;
+var storageGet;
+$("#favorite").append(storageGet);
 function renderButtons() {
   $("#buttons-view").empty();
   for (var i = 0; i < topics.length; i++) {
@@ -41,10 +39,6 @@ function renderButtons() {
   }
 }
 
-renderButtons();
-
-$(".container").on("click", ".gifButton", displayGifs);
-$(".container").on("click", "img", displayAnim);
 function displayGifs() {
   gifSet.empty();
   if (clickedButton !== $(this).data("name")) {
@@ -75,8 +69,6 @@ function displayGifs() {
       url: queryURLMovies,
       method: "GET"
     }).then(function(responseMovies) {
-      console.log(responseMovies);
-
       if (responseMovies.Response === "True") {
         for (var i = 0; i < responseMovies.Search.length; i++) {
           movieCollection.push(responseMovies.Search[i]);
@@ -84,16 +76,12 @@ function displayGifs() {
         page++;
       }
       saveImgAttr(response, movieCollection);
-      console.log(page);
-      console.log(movieCollection);
     });
   });
 }
 
 function saveImgAttr(response, movieCollection) {
   arr = response.data;
-  console.log(response);
-  console.log(movieCollection);
   for (var i = 0; i < arr.length; i++) {
     var card = $(".hidden").html();
     card = $(card);
@@ -114,19 +102,18 @@ function saveImgAttr(response, movieCollection) {
         .attr("href", "https://www.imdb.com/title/" + movieCollection[i].imdbID)
         .append(movieCollection[i].Title);
     }
-
     gifSet.append(card);
   }
 }
-$(document).on("click", "#addToFav", addToFavorite);
 
 function addToFavorite() {
   $("#favorite").append($(this).closest(".card"));
   $(this)
     .attr({ id: "remove", title: "remove" })
     .text("X");
+  storageSet = localStorage.setItem($("savedCards"), $("#favorite").html());
+  storageGet = localStorage.getItem("savedCards");
 }
-$(document).on("click", "#remove", remove);
 
 function remove() {
   $(this)
@@ -146,6 +133,11 @@ function displayAnim() {
   }
 }
 
+$(".row")
+  .last()
+  .prepend(gifSet);
+renderButtons();
+
 $("#add-button").on("click", function(event) {
   event.preventDefault();
   var newButton = $("#button-name").val();
@@ -153,3 +145,7 @@ $("#add-button").on("click", function(event) {
   renderButtons();
   $("#button-name").val("");
 });
+$(".container").on("click", ".gifButton", displayGifs);
+$(".container").on("click", "img", displayAnim);
+$(document).on("click", "#remove", remove);
+$(document).on("click", "#addToFav", addToFavorite);
