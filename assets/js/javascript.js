@@ -25,9 +25,10 @@ var page = 1;
 var clickedButton;
 var gifSet = $("<div>").addClass("card-columns col-md-12");
 var responseMovies;
-var storageSet;
-var storageGet;
+
+var storageGet = localStorage.getItem("savedCards");
 $("#favorite").append(storageGet);
+
 function renderButtons() {
   $("#buttons-view").empty();
   for (var i = 0; i < topics.length; i++) {
@@ -96,11 +97,13 @@ function saveImgAttr(response, movieCollection) {
     card.find("#rating").append(arr[i].rating);
     card.find("#tags").append(arr[i].slug);
     card.find("#download").attr("href", arr[i].images.fixed_width_still.url);
+    console.log(movieCollection);
     if (i < movieCollection.length) {
       card
         .find(".card-link")
         .attr("href", "https://www.imdb.com/title/" + movieCollection[i].imdbID)
         .append(movieCollection[i].Title);
+      console.log($(".card-link"));
     }
     gifSet.append(card);
   }
@@ -111,18 +114,17 @@ function addToFavorite() {
   $(this)
     .attr({ id: "remove", title: "remove" })
     .text("X");
-  storageSet = localStorage.setItem($("savedCards"), $("#favorite").html());
-  storageGet = localStorage.getItem("savedCards");
+  localStorage.setItem("savedCards", $("#favorite").html());
 }
 
 function remove() {
   $(this)
     .closest(".card")
     .remove();
+  localStorage.setItem("savedCards", $("#favorite").html());
 }
 
 function displayAnim() {
-  console.log($(this));
   var state = $(this).data("state");
   if (state === "still") {
     $(this).attr("src", $(this).data("animate"));

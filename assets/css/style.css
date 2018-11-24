@@ -78,10 +78,10 @@ h5 {
 .hidden {
   display: none;
 }
-a {
+#logo {
   color: white;
 }
-a:hover {
+#logo:hover {
   color: white;
   text-decoration: none;
 }
