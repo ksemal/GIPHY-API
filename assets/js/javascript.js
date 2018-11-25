@@ -25,7 +25,6 @@ var page = 1;
 var clickedButton;
 var gifSet = $("<div>").addClass("card-columns col-md-12");
 var responseMovies;
-
 var storageGet = localStorage.getItem("savedCards");
 $("#favorite").append(storageGet);
 
