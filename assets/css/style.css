@@ -99,3 +99,13 @@ h5 {
     padding-top: 10px;
   }
 }
+@media 
+(-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 192dpi) { 
+    .card-columns {
+    column-count: 1;
+  }
+  .card {
+    width: 100%;
+  }
+}
