@@ -82,6 +82,7 @@ function displayGifs() {
 
 function saveImgAttr(response, movieCollection) {
   arr = response.data;
+  console.log(arr);
   for (var i = 0; i < arr.length; i++) {
     var card = $(".hidden").html();
     card = $(card);
@@ -95,7 +96,9 @@ function saveImgAttr(response, movieCollection) {
     card.find("#title").append(arr[i].title);
     card.find("#rating").append(arr[i].rating);
     card.find("#tags").append(arr[i].slug);
-    card.find("#download").attr("href", arr[i].images.fixed_width_still.url);
+    var pathForSaving = arr[i].images.original.url;
+    pathForSaving = pathForSaving.substring(0, pathForSaving.indexOf("?"));
+    card.find("#download").attr("data-href", pathForSaving);
     console.log(movieCollection);
     if (i < movieCollection.length) {
       card
@@ -134,6 +137,38 @@ function displayAnim() {
   }
 }
 
+// functions to download the image
+
+function forceDownload(blob, filename) {
+  var a = document.createElement("a");
+  a.download = filename;
+  a.href = blob;
+  a.click();
+}
+
+function downloadResource(url, filename) {
+  if (!filename)
+    filename = url
+      .split("\\")
+      .pop()
+      .split("/")
+      .pop();
+  fetch(url, {
+    headers: new Headers({
+      Origin: location.origin
+    }),
+    mode: "cors"
+  })
+    .then(response => response.blob())
+    .then(blob => {
+      let blobUrl = window.URL.createObjectURL(blob);
+      forceDownload(blobUrl, filename);
+    })
+    .catch(e => console.error(e));
+}
+
+//------------
+
 $(".row")
   .last()
   .prepend(gifSet);
@@ -150,3 +185,6 @@ $(".container").on("click", ".gifButton", displayGifs);
 $(".container").on("click", "img", displayAnim);
 $(document).on("click", "#remove", remove);
 $(document).on("click", "#addToFav", addToFavorite);
+$(document).on("click", "#download", function() {
+  downloadResource($(this).data("href"));
+});
