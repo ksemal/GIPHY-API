@@ -14,3 +14,5 @@ GIPHY API App is a dynamic web page that populates with gifs of your choice.
 
 - The user can add their favorite gifs to a `favorite` section with "heart" button and remove them from the section with remove button. This information is saved in local storage and it shows on the page even when the page is reloaded.
 - The user can download any gif by clicking on download button(arrow down).
+
+![screenshot](assets/images/screencapture.png)
