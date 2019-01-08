@@ -51,7 +51,7 @@ function displayGifs() {
   var queryURL =
     "https://api.giphy.com/v1/gifs/search?q=" +
     clickedButton +
-    "&api_key=dc6zaTOxFJmzC&limit=" +
+    "&api_key=uGkmCIitp5DjAFBaFY6BV6YNZ4qlay2q&limit=" +
     limit;
 
   var queryURLMovies =
@@ -59,7 +59,7 @@ function displayGifs() {
     clickedButton +
     "&page=" +
     page +
-    "&apikey=trilogy";
+    "&apikey=181f8c24";
 
   $.ajax({
     url: queryURL,
@@ -70,6 +70,7 @@ function displayGifs() {
       method: "GET"
     }).then(function(responseMovies) {
       if (responseMovies.Response === "True") {
+        movieCollection = [];
         for (var i = 0; i < responseMovies.Search.length; i++) {
           movieCollection.push(responseMovies.Search[i]);
         }
